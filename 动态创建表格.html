@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      #mainContainer {
+        display: flex;
+        align-items: start;
+        justify-content: space-around;
+      }
+
+      #container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+      }
+
+      #stuTable {
+        border: 1px solid black;
+        width: 500px;
+      }
+      #stuTbale th,
+      td {
+        text-align: center;
+      }
+
+      #container button {
+        height: 30px;
+        width: 70px;
+        border: none;
+        background-color: lightgrey;
+        margin-left: 5%;
+        cursor: pointer;
+      }
+
+      #msgInputing {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #msgInputing input {
+        outline: none;
+        border-radius: 5px;
+      }
+      .error {
+        border: red 2px solid;
+      }
+      .success {
+        border: green 2px solid;
+      }
+
+      a {
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mainContainer">
+      <table id="stuTable">
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>学科</th>
+            <th>成绩</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="stuTableBody"></tbody>
+      </table>
+
+      <div id="container">
+        <div id="msgInputing">
+          <label
+            >姓名:<input type="text" id="nameInfo" placeholder="请输入学生姓名"
+          /></label>
+          <label
+            >学科:<input type="text" id="subjectInfo" placeholder="请输入学科"
+          /></label>
+          <label
+            >成绩:<input
+              type="text"
+              id="scoreInfo"
+              placeholder="请输入学生成绩"
+          /></label>
+        </div>
+        <button>创建</button>
+      </div>
+    </div>
+
+    <script>
+      const nameMsg = document.querySelector('#nameInfo');
+      const subjectMsg = document.querySelector('#subjectInfo');
+      const scoreMsg = document.querySelector('#scoreInfo');
+      const table = document.querySelector('#stuTable');
+
+      //新增行
+      function addRows() {
+        //创建行
+        const row = table.insertRow(1);
+        //创建格
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        const cell4 = row.insertCell(3);
+        //a标签创建 删除功能
+        const aDelete = document.createElement('a');
+        aDelete.href = '#';
+        const cell4Del = row.cells[3].appendChild(aDelete);
+        //删除当前行
+        aDelete.addEventListener('click', function () {
+          table.deleteRow(row.rowIndex);
+        });
+        //每格内容填充
+        cell1.textContent = nameMsg.value;
+        cell2.textContent = subjectMsg.value;
+        cell3.textContent = scoreMsg.value;
+        aDelete.textContent = '删除';
+      }
+      //文本框是否输入
+      function checkInput() {
+        const msgArr = [nameMsg, subjectMsg, scoreMsg];
+        let beCompleted = true;
+        msgArr.forEach((msg) => {
+          if (msg.value.trim() === '') {
+            msg.classList.add('error');
+            beCompleted = false;
+          } else {
+            msg.classList.remove('error');
+            msg.classList.add('success');
+          }
+        });
+        return beCompleted;
+      }
+
+      //按钮点击功能
+      document.querySelector('button').addEventListener('click', function () {
+        if (checkInput()) {
+          addRows();
+          //输入框清空
+          const msgArr = [nameMsg, subjectMsg, scoreMsg];
+          msgArr.forEach((msg) => {
+            msg.classList.remove('success');
+            msg.value = '';
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
